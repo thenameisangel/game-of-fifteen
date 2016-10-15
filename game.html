@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game of Fifteen</title>
+  <link rel="stylesheet" style="game of fifteen" script src="text/css" href="./game.css"/>
+</head>
+<body>
+  <h1>Game of Fifteen</h1>
+  <table border="0" id="gameOfFifteen">
+    <tr>
+      <td><input type="button" id="b00" value=""/></td>
+      <td><input type="button" id="b01" value=""/></td>
+      <td><input type="button" id="b02" value=""/></td>
+      <td><input type="button" id="b03" value=""/></td>
+    </tr>
+    <tr>
+      <td><input type="button" id="b10" value=""/></td>
+      <td><input type="button" id="b11" value=""/></td>
+      <td><input type="button" id="b12" value=""/></td>
+      <td><input type="button" id="b13" value=""/></td>
+    </tr>
+    <tr>
+      <td><input type="button" id="b20" value=""/></td>
+      <td><input type="button" id="b21" value=""/></td>
+      <td><input type="button" id="b22" value=""/></td>
+      <td><input type="button" id="b23" value=""/></td>
+    </tr>
+    <tr>
+      <td><input type="button" id="b30" value=""/></td>
+      <td><input type="button" id="b31" value=""/></td>
+      <td><input type="button" id="b32" value=""/></td>
+      <td><input type="button" id="b33" value=""/></td>
+    </tr>
+  </table>
+
+  <script type="text/javascript">
+    emptyCell = "";
+    var parent = document.querySelector("#gameOfFifteen");
+    parent.addEventListener("click", swapTiles, false);
+    elt = document.getElementById("gameOfFifteen");
+
+    //store solvable puzzles
+    var puzzle1 = [12, 7, 2, 11, 5, 15, 14, 13, 6, 1, 3, 9, 10, 4, 8, ""];
+    var puzzle2 = [14, 8, 13, 5, 11, 15, 12, 2, 7, 10, 4, 1, 3, 6, 9, ""];
+    var puzzle3 = [2, 12, 15, 8, 14, 1, 7, 13, 9, 6, 11, 10, 4, "", 5, 3];
+    var puzzle4 = [3, 9, 7, 5, 13, 11, 15, 8, 10, 1, 12, 6, 2, 4, 14, ""];
+    var puzzle5 = [13, 2, 15, 6, 8, 5, 4, 3, 10, 9, 12, 14, 1, 11, 7, ""];
+    var puzzle6 = [2, 10, 12, 7, 1, 8, 15, 13, 5, 9, 6, 3, 14, 4, 11, ""];
+    var puzzle7 = [1, 2, 7, 13, 10, 15, 3, "", 5, 8, 12, 11, 14, 4, 9, 6];
+    var puzzle8 = [4, 10, 5, 3, 12, 2, 7, 13, 1, 14, "", 11, 6, 15, 9, 8];
+    var puzzle9 = [10, 5, "", 3, 4, 15, 1, 13, 7, 9, 6, 11, 2, 14, 12, 8];
+    var puzzle10 = [10, 3, 1, 13, 9, 14, 15, 11, "", 7, 5, 12, 2, 4, 8, 6];
+    collection = [puzzle1, puzzle2, puzzle3, puzzle4, puzzle5, puzzle6, puzzle7, puzzle8, puzzle9, puzzle10];
+
+    //select random puzzle
+    function selectPuzzle(min, max) {
+      index = Math.floor(Math.random() * (max - min + 1)) + min;
+      return collection[index];
+    }
+
+    var puzzle = selectPuzzle(0, 10);
+
+    //populate tiles
+    var buttons = document.getElementsByTagName("input");
+    for (i = 0; i < 16; i++) {
+      //set button value from randomly selected puzzle
+      buttons[i].value = puzzle[i];
+      if (puzzle[i] == "") {
+        emptyCell = document.getElementById(buttons[i].id);
+      }
+    }
+
+    function swapTiles(btn) {
+      var row = btn.target.id.charAt(1);
+      var col = btn.target.id.charAt(2);
+      var emptyRow = emptyCell.id.charAt(1);
+      var emptyCol = emptyCell.id.charAt(2);
+      var colDiff = Math.abs(emptyCol - col);
+      var rowDiff = Math.abs(emptyRow - row);
+
+      //swap tiles if an adjacent tile is the empty cell
+      if (((emptyRow == row) && (colDiff == 1)) || ((emptyCol == col) && (rowDiff == 1))) {
+        //set old empty cell value to current cell's value
+        emptyCell.value = btn.target.value;
+        //clear current cell's value
+        btn.target.value = "";
+        //update empty cell id to current cell's id
+        emptyCell = document.getElementById(btn.target.id);
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>
